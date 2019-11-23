@@ -8,4 +8,5 @@ d.text("Jeff", 0, 0)
 d.show()
 utime.sleep(5)
 
-d.marquee("Now is the time for all good men...")
+while True:
+    d.marquee("Now is the time for all good men...")
