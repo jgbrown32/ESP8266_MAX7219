@@ -22,6 +22,8 @@ _DISPLAY_TEST_NORMAL_OPERATION = const(0x0)
 
 _MATRIX_SIZE = const(8)
 
+# _SCROLL_SPEED_NORMAL is ms to delay (slow) scrolling text.
+_SCROLL_SPEED_NORMAL = 25
 
 class Max7219(framebuf.FrameBuffer):
     """
@@ -57,7 +59,6 @@ class Max7219(framebuf.FrameBuffer):
         self.rows = height // _MATRIX_SIZE
         self.nb_matrices = self.cols * self.rows
         self.rotate_180 = rotate_180
-        # self.scroll_message = scroll_message
         # 1 bit per pixel (on / off) -> 8 bytes per matrix
         self.buffer = bytearray(width * height // 8)
         format = framebuf.MONO_HLSB if not self.rotate_180 else framebuf.MONO_HMSB
@@ -90,21 +91,19 @@ class Max7219(framebuf.FrameBuffer):
         self.show()
 
     def brightness(self, value):
-        """Set display brightness (0 to 15)"""
+        # Set display brightness (0 to 15)
         if not 0 <= value < 16:
             raise ValueError('Brightness must be between 0 and 15')
         self._write_command(_INTENSITY, value)
 
     def marquee(self, message):
-        # global message
-        while True:
-            start = 33
-            extent = 0 - (len(message) * 8) - 32
-            for i in range(start, extent, -1):
-                self.fill(0)
-                self.text(message, i, 0, 1)
-                self.show()
-                utime.sleep_ms(25)
+        start = 33
+        extent = 0 - (len(message) * 8) - 32
+        for i in range(start, extent, -1):
+            self.fill(0)
+            self.text(message, i, 0, 1)
+            self.show()
+            utime.sleep_ms(_SCROLL_SPEED_NORMAL)
 
     def show(self):
         """Update display"""
@@ -120,10 +119,8 @@ class Max7219(framebuf.FrameBuffer):
                     offset = row * 8 * self.cols
                     index = col + line * self.cols + offset
                 else:
-                    # offset = 8 * self.cols - row * self.cols * 8 - 1	#Original code -- Defect -- Issue #4
-                    # index = self.cols * (8 - line) - col + offset		#Original code -- Defect -- Issue #4
-                    offset = 8 * self.cols - row * (8 - line) * self.cols  # Workaround noted in Issue #4
-                    index = (7 - line) * self.cols + col - offset  # Workaround noted in Issue #4
+                    offset = 8 * self.cols - row * (8 - line) * self.cols
+                    index = (7 - line) * self.cols + col - offset
 
                 self.spi.write(bytearray([_DIGIT_0 + line, self.buffer[index]]))
 
