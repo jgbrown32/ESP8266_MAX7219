@@ -22,21 +22,21 @@ display.show()
 # display.marquee(msg_to_display)
 display.marquee("This is my message")
 ```
-### Use Notes
+#### Use Notes
 * The ESP8266 SPI bus seems to work best with a baud rate of 10000000.
 * Some 8x8 matrix displays (specifically the chained 4x displays) are rotated 180 degrees when connected.  Use the rotate parameter (True or False) to address your specific display. 
-* See MicroPython documentation of framebuf for additional supported methods (https://docs.micropython.org/en/latest/library/framebuf.html).
+* See MicroPython documentation of *framebuf* for additional supported methods (https://docs.micropython.org/en/latest/library/framebuf.html).
 * This library has only been tested on an ESP8266 but may work on other systems.
 
 ## Connecting on ESP8266
 
-ESP8266 | MAX7219
---- | ---
-5V | VCC
-GND | GND
-D7 (GPIO13) | DIN
-D8 (GPIO15) | CS
-D5 (GPIO14) | CLK
+ ESP8266 | MAX7219
+ --- | ---
+ 5V | VCC
+ GND | GND
+ D7 (GPIO13) | DIN
+ D8 (GPIO15) | CS
+ D5 (GPIO14) | CLK
 
 ## Examples
 
