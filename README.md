@@ -1,8 +1,6 @@
 # MAX7219 8x8 LED Matrix Library
 This library provides support for the MAX7219 8x8 LED matrix on ESP8266 with MicroPython. It uses framebuf internally to provide drawing primitives and text support (including scrolling marquee). You can chain several matrices any way you like: if you use two 4x 8x8 matrices, you can have one of the left, and the other on the right giving you a 64x8 area, or have one on top of the other to have a 32x16 display!
 
-The library has only been tested on an ESP8266 but may work on other systems.
-
 This library is a mashup of several others in an attempt to compile a single MAX7219 driver with comprehensive functionality.   See Credits below.
 
 ## Syntax
@@ -14,14 +12,21 @@ spi = SPI(1, baudrate=10000000)
 display = Max7219(width, height, spi, cs, rotate)
   # width = total width of display in pixels
   # height = total height of display in pixels
-  # spi = 
-  # cs = cs pin
+  # spi = SPI bus
+  # cs = cs (Chip Select) pin on ESP8266
   # rotate = rotate display 180 degrees (Optional; default = True) 
 display = Max7219(8, 8, spi, Pin(15))
 display.text('A', 0, 0)
 display.show()
+
+# display.marquee(msg_to_display)
 display.marquee("This is my message")
 ```
+### Use Notes
+* The ESP8266 SPI bus seems to work best with a baud rate of 10000000.
+* Some 8x8 matrix displays (specifically the chained 4x displays) are rotated 180 degrees when connected.  Use the rotate parameter (True or False) to address your specific display. 
+* See MicroPython documentation of framebuf for additional supported methods (https://docs.micropython.org/en/latest/library/framebuf.html).
+* This library has only been tested on an ESP8266 but may work on other systems.
 
 ## Connecting on ESP8266
 
@@ -34,7 +39,6 @@ D8 (GPIO15) | CS
 D5 (GPIO14) | CLK
 
 ## Examples
-Using 10000000 as baudrate is recommended as greater values don't seem to work well...
 
 #### Single 8x8 matrix
 ```
@@ -58,7 +62,7 @@ screen.text('ABCD', 0, 0, 1)
 screen.show()
 ```
 
-### Two 4x 8x8 matrices (left/right)
+#### Two 4x 8x8 matrices (left/right)
 ```
 from machine import Pin, SPI
 import max7219
@@ -69,7 +73,7 @@ screen.text('ABCDEFGH', 0, 0, 1)
 screen.show()
 ```
 
-### Two 4x 8x8 matrices (top/bottom)
+#### Two 4x 8x8 matrices (top/bottom)
 ```
 from machine import Pin, SPI
 import max7219
