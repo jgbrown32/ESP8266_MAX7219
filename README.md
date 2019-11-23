@@ -5,7 +5,25 @@ The library has only been tested on an ESP8266 but may work on other systems.
 
 This library is a mashup of several others in an attempt to compile a single MAX7219 driver with comprehensive functionality.   See Credits below.
 
-###Connecting on ESP8266
+## Syntax
+```
+from machine import Pin, SPI
+import max7219
+
+spi = SPI(1, baudrate=10000000)
+display = Max7219(width, height, spi, cs, rotate)
+  # width = total width of display in pixels
+  # height = total height of display in pixels
+  # spi = 
+  # cs = cs pin
+  # rotate = rotate display 180 degrees (Optional; default = True) 
+display = Max7219(8, 8, spi, Pin(15))
+display.text('A', 0, 0)
+display.show()
+display.marquee("This is my message")
+```
+
+## Connecting on ESP8266
 
 ESP8266 | MAX7219
 --- | ---
@@ -15,11 +33,11 @@ D7 (GPIO13) | DIN
 D8 (GPIO15) | CS
 D5 (GPIO14) | CLK
 
-##Examples
+## Examples
 Using 10000000 as baudrate is recommended as greater values don't seem to work well...
 
-####Single 8x8 matrix
-
+#### Single 8x8 matrix
+```
 from machine import Pin, SPI
 import max7219
 
@@ -27,8 +45,10 @@ spi = SPI(1, baudrate=10000000)
 screen = Max7219(8, 8, spi, Pin(15))
 screen.text('A', 0, 0, 1)
 screen.show()
+```
 
-####Single 4x 8x8 matrix
+#### Single 4x 8x8 matrix
+```
 from machine import Pin, SPI
 import max7219
 
@@ -36,8 +56,10 @@ spi = SPI(1, baudrate=10000000)
 screen = Max7219(32, 8, spi, Pin(15))
 screen.text('ABCD', 0, 0, 1)
 screen.show()
+```
 
-###Two 4x 8x8 matrices (left/right)
+### Two 4x 8x8 matrices (left/right)
+```
 from machine import Pin, SPI
 import max7219
 
@@ -45,8 +67,10 @@ spi = SPI(1, baudrate=10000000)
 screen = Max7219(64, 8, spi, Pin(15))
 screen.text('ABCDEFGH', 0, 0, 1)
 screen.show()
+```
 
-###Two 4x 8x8 matrices (top/bottom)
+### Two 4x 8x8 matrices (top/bottom)
+```
 from machine import Pin, SPI
 import max7219
 
@@ -55,8 +79,8 @@ screen = Max7219(32, 16, spi, Pin(15))
 screen.text('ABCD', 0, 0, 1)
 screen.text('EFGH', 0, 8, 1)
 screen.show()
-
-##Credits
+```
+## Credits
 This library is based on:
 * (Vincent Rialland) https://github.com/vrialland/micropython-max7219
 * (Mike Causer) https://github.com/mcauser/micropython-max7219
