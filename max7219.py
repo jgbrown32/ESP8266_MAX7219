@@ -95,6 +95,17 @@ class Max7219(framebuf.FrameBuffer):
             raise ValueError('Brightness must be between 0 and 15')
         self._write_command(_INTENSITY, value)
 
+    def marquee(self, message):
+        # global message
+        while True:
+            start = 33
+            extent = 0 - (len(message) * 8) - 32
+            for i in range(start, extent, -1):
+                self.fill(0)
+                self.text(message, i, 0, 1)
+                self.show()
+                utime.sleep_ms(25)
+
     def show(self):
         """Update display"""
         # Write line per line on the matrices
@@ -119,13 +130,3 @@ class Max7219(framebuf.FrameBuffer):
             self.cs(1)
 
 
-def scroll_message(display, message):
-    # global message
-    while True:
-        start = 33
-        extent = 0 - (len(message) * 8) - 32
-        for i in range(start, extent, -1):
-            display.fill(0)
-            display.text(message, i, 0, 1)
-            display.show()
-            utime.sleep_ms(25)
