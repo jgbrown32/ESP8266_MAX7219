@@ -1,9 +1,17 @@
 # MAX7219 8x8 LED Matrix Library
-This library provides support for the MAX7219 8x8 LED matrix on ESP8266 with MicroPython. It uses framebuf internally to provide drawing primitives and text support (including scrolling marquee). You can chain several matrices any way you like: if you use two 4x 8x8 matrices, you can have one of the left, and the other on the right giving you a 64x8 area, or have one on top of the other to have a 32x16 display!
+This library provides support for the MAX7219 8x8 LED matrix on ESP8266 with MicroPython. It uses framebuf internally to provide drawing primitives and text support (including scrolling marquee). You can chain several matrices any way you like: if you use two 4x 8x8 matrices, you can have one of the left, and the other on the right giving you a 64x8 pixel area, or have one on top of the other to have a 32x16 pixel display!
 
 This library is a mashup of several others in an attempt to compile a single MAX7219 driver with comprehensive functionality.   See Credits below.
 
 ## Syntax
+
+#### Methods
+* show() : Writes bytearray buffer to display.
+* brightness(*value*) : Set brightness level for display. Value is an integer from 0 to 15.
+* marquee(*msg*) : Scroll *msg* string across the display, from right to left.
+* *framebuf* methods: https://docs.micropython.org/en/latest/library/framebuf.html
+
+#### Example
 ```
 from machine import Pin, SPI
 import max7219
@@ -22,13 +30,14 @@ display.show()
 # display.marquee(msg_to_display)
 display.marquee("This is my message")
 ```
+
 #### Use Notes
 * The ESP8266 SPI bus seems to work best with a baud rate of 10000000.
 * Some 8x8 matrix displays (specifically the chained 4x displays) are rotated 180 degrees when connected.  Use the rotate parameter (True or False) to address your specific display. 
 * See MicroPython documentation of *framebuf* for additional supported methods (https://docs.micropython.org/en/latest/library/framebuf.html).
 * This library has only been tested on an ESP8266 but may work on other systems.
 
-## Connecting on ESP8266
+## Connecting to ESP8266
 
  ESP8266 | MAX7219
  --- | ---
@@ -86,8 +95,8 @@ screen.show()
 ```
 ## Credits
 This library is based on:
-* (Vincent Rialland) https://github.com/vrialland/micropython-max7219
-* (Mike Causer) https://github.com/mcauser/micropython-max7219
-* (joewez) https://github.com/joewez/WifiMarquee
+* Vincent Rialland : https://github.com/vrialland/micropython-max7219
+* Mike Causer : https://github.com/mcauser/micropython-max7219
+* joewez : https://github.com/joewez/WifiMarquee
 
 Thank you for sharing your code!
