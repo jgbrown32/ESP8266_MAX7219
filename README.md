@@ -17,7 +17,7 @@ from machine import Pin, SPI
 import max7219
 
 spi = SPI(1, baudrate=10000000)
-# display = Max7219(width, height, spi, cs, rotate)
+# display = max7219.Max7219(width, height, spi, cs, rotate)
   # width = total width of display in pixels
   # height = total height of display in pixels
   # spi = SPI bus
