@@ -17,13 +17,13 @@ from machine import Pin, SPI
 import max7219
 
 spi = SPI(1, baudrate=10000000)
-display = Max7219(width, height, spi, cs, rotate)
+# display = Max7219(width, height, spi, cs, rotate)
   # width = total width of display in pixels
   # height = total height of display in pixels
   # spi = SPI bus
   # cs = cs (Chip Select) pin on ESP8266
   # rotate = rotate display 180 degrees (Optional; default = True) 
-display = Max7219(8, 8, spi, Pin(15))
+display = max7219.Max7219(8, 8, spi, Pin(15))
 display.text('A', 0, 0)
 display.show()
 
